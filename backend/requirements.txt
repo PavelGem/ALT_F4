@@ -3,4 +3,3 @@ uvicorn[standard]
 sqlalchemy
 python-multipart
 pydantic
-sqlite3
