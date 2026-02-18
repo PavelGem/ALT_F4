@@ -1,0 +1,7 @@
+# Удаление .DS_Store во всех папках
+**/.DS_Store
+
+# Удаление всех папок __pycache__
+**/__pycache__/
+*.py[cod]
+*$py.class
