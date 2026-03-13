@@ -1,7 +1,7 @@
 // frontend/src/pages/MainPage.js
 import React from 'react';
 import { useUsers } from '../hooks/useUsers';
-import { api } from '../utils/api';
+import api from '../utils/api';
 import UserList from '../components/UserList';  
 import UserSearch from '../components/UserSearch';
 import styles from './MainPage.module.css';
@@ -23,7 +23,7 @@ function MainPage() {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>📊 Моё React приложение</h1>
+            <h1 className={styles.title}>📊 Клуб ALT+F4 </h1>
             
             {/* Статус бэкенда */}
             <div className={styles.statusCard}>

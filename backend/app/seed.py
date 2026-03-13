@@ -1,6 +1,6 @@
 import os
 from sqlalchemy import create_engine, Column, Integer, String, Text
-from sqlalchemy.ext.declarative import declarative_base
+#from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from database import engine, get_db, SessionLocal
@@ -19,6 +19,7 @@ def init_database():
     Base.metadata.create_all(bind=engine)
     print("✅ Таблицы созданы")
     db = SessionLocal()
+    '''
     try:
         user_count = db.query(User).count()
         if user_count == 0:
@@ -30,15 +31,40 @@ def init_database():
         print(f"❌ Ошибка: {e}")
         db.rollback()
     finally:
-        db.close()
+    	db.close()
+    '''	
     return engine
     
 def main():
-    engine = init_database()
+    init_database()
 
 if __name__ == "__main__":
     main()
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
     
 '''
 import sqlite3

@@ -8,6 +8,7 @@ services:
       - ./backend:/app
     environment:
       - DATABASE_URL=sqlite:///./ALT_F4.db
+      - SECRET_KEY=your-secret-key-here-change-in-production
     networks:
       - app-network
     #command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload  
@@ -36,4 +37,3 @@ services:
 networks:
   app-network:
     driver: bridge
-    
