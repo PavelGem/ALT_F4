@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import styles from './LoginForm.module.css';  // Импортируем как styles
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -30,53 +31,66 @@ const LoginForm = () => {
       await login(formData.username, formData.password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Login failed');
+      setError(err.response?.data?.detail || 'Неверный email или пароль');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-form">
-      <h2>Вход в систему</h2>
-      
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            name="username"
-            placeholder="Email или имя пользователя"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
+    <div className={styles.container}>
+      <div className={styles.box}>
+        <h2 className={styles.title}>Добро пожаловать! 👋</h2>
+        <p className={styles.subtitle}>Войдите в свой аккаунт</p>
         
-        <div className="form-group">
-          <input
-            type="password"
-            name="password"
-            placeholder="Пароль"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        {(error || authError) && (
-          <div className="error-message">
-            {error || authError}
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Email или имя пользователя</label>
+            <input
+              type="text"
+              name="username"
+              placeholder="example@mail.com"
+              value={formData.username}
+              onChange={handleChange}
+              required
+              className={styles.input}
+            />
           </div>
-        )}
+          
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Пароль</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className={styles.input}
+            />
+          </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Вход...' : 'Войти'}
-        </button>
+          {(error || authError) && (
+            <div className={styles.errorAlert}>
+              {error || authError}
+            </div>
+          )}
 
-        <div className="auth-links">
-          <Link to="/register">Нет аккаунта? Зарегистрироваться</Link>
-        </div>
-      </form>
+          <button 
+            type="submit" 
+            disabled={loading}
+            className={`${styles.button} ${loading ? styles.buttonLoading : ''}`}
+          >
+            {loading ? 'Вход...' : 'Войти'}
+          </button>
+
+          <div className={styles.linkContainer}>
+            <Link to="/auth/register" className={styles.link}>
+              Нет аккаунта? Зарегистрироваться
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

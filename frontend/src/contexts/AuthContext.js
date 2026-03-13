@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const response = await api.get('/auth/me');
+      const response = await api.get('/api/v1/auth/me');
       setUser(response.data);
     } catch (error) {
       console.error('Auth check failed:', error);
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     setError(null);
     try {
-      const response = await api.post('/auth/login', { username, password });
+      const response = await api.post('/api/v1/auth/login', { username, password });
       
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     setError(null);
     try {
-      const response = await api.post('/auth/register', userData);
+      const response = await api.post('/api/v1/auth/register', userData);
       return response.data;
     } catch (error) {
       setError(error.response?.data?.detail || 'Registration failed');

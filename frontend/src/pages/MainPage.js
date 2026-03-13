@@ -1,29 +1,59 @@
 // frontend/src/pages/MainPage.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Добавляем для редиректа
 import { useUsers } from '../hooks/useUsers';
+import { useAuth } from '../contexts/AuthContext'; // Добавляем для logout
 import api from '../utils/api';
 import UserList from '../components/UserList';  
 import UserSearch from '../components/UserSearch';
 import styles from './MainPage.module.css';
 
 function MainPage() {
-    const [message, setMessage] = React.useState('Загрузка...');
+    const navigate = useNavigate();
+    const { logout, user } = useAuth(); // Получаем функцию logout и данные пользователя
+    const [message, setMessage] = useState('Проверка связи...');
     const { users, loading, error, searchUser } = useUsers();
 
     // Проверка связи с бэкендом
-    React.useEffect(() => {
-        api.checkConnection()
-            .then(data => {
-                setMessage(data.message || 'Связь с бэкендом есть');
-            })
-            .catch(err => {
-                setMessage('❌ Ошибка связи: ' + err.message);
-            });
+    useEffect(() => {
+        const checkBackend = async () => {
+            try {
+                const response = await api.get('/');
+                setMessage(response.data?.message || '✅ Связь с бэкендом есть');
+            } catch (err) {
+                setMessage('❌ Ошибка связи: ' + (err.message || 'неизвестная ошибка'));
+                console.error('Backend connection error:', err);
+            }
+        };
+
+        checkBackend();
     }, []);
+
+    // Обработчик выхода
+    const handleLogout = () => {
+        logout(); // Очищаем токены и данные пользователя
+        navigate('/auth/login'); // Перенаправляем на страницу входа
+    };
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>📊 Клуб ALT+F4 </h1>
+            {/* Шапка с приветствием и кнопкой выхода */}
+            <div className={styles.header}>
+                <h1 className={styles.title}>📊 Клуб ALT+F4</h1>
+                <div className={styles.userInfo}>
+                    {user && (
+                        <span className={styles.welcomeText}>
+                            👋 Привет, {user.full_name || user.email}!
+                        </span>
+                    )}
+                    <button 
+                        onClick={handleLogout}
+                        className={styles.logoutButton}
+                    >
+                        Выйти
+                    </button>
+                </div>
+            </div>
             
             {/* Статус бэкенда */}
             <div className={styles.statusCard}>
@@ -52,8 +82,8 @@ function MainPage() {
             <div className={styles.infoCard}>
                 <h3>Информация:</h3>
                 <ul>
-                    <li>Бэкенд: <a href="http://localhost:8000">http://localhost:8000</a></li>
-                    <li>Документация: <a href="http://localhost:8000/docs">http://localhost:8000/docs</a></li>
+                    <li>Бэкенд: <a href="http://localhost:8000" target="_blank" rel="noreferrer">http://localhost:8000</a></li>
+                    <li>Документация: <a href="http://localhost:8000/docs" target="_blank" rel="noreferrer">http://localhost:8000/docs</a></li>
                 </ul>
             </div>
         </div>

@@ -1,8 +1,5 @@
-// frontend/src/App.js
-
-// frontend/src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';  // 👈 Добавьте Navigate
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/auth/PrivateRoute';
 import MainPage from './pages/MainPage';
@@ -14,7 +11,14 @@ function App() {
       <AuthProvider>
         <div className="App">
           <Routes>
+            {/* Редиректы с /login и /register на /auth/login и /auth/register */}
+            <Route path="/login" element={<Navigate to="/auth/login" replace />} />
+            <Route path="/register" element={<Navigate to="/auth/register" replace />} />
+            
+            {/* Все auth маршруты */}
             <Route path="/auth/*" element={<AuthPage />} />
+            
+            {/* Защищенная главная страница */}
             <Route
               path="/"
               element={
@@ -31,15 +35,3 @@ function App() {
 }
 
 export default App;
-
-
-
-/*import React from 'react';
-import MainPage from './pages/MainPage';
-
-function App() {
-    return <MainPage />;
-}
-
-export default App;
-*/

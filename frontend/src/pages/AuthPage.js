@@ -1,9 +1,8 @@
-// frontend/src/pages/AuthPage.js
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
-import { useAuth } from '../contexts/AuthContext';
 
 const AuthPage = () => {
   const { isAuthenticated } = useAuth();
